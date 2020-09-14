@@ -12,7 +12,7 @@ class Interpolator:
 		in_csv  = a CSV file that has the N/A values as 'nan'.
 		out_csv = to be written to. The matrix with N/A occurrences replaced by interpolated values.
 	"""
-	def __init__(self, in_csv, out_csv):
+	def __init__(self, in_csv, out_csv, logger):
 		self.in_csv = in_csv
 		self.out_csv = out_csv
 		self._csv_check()
@@ -124,6 +124,6 @@ if __name__ == '__main__':
 	in_csv = args.csv_file_input
 	out_csv = args.csv_file_output
 	##
-	interpolator = Interpolator(in_csv, out_csv)
+	interpolator = Interpolator(in_csv, out_csv, logger)
 	interpolator.generate_interpolated_data()
 
