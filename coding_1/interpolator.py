@@ -13,6 +13,7 @@ class Interpolator:
 		out_csv = to be written to. The matrix with N/A occurrences replaced by interpolated values.
 	"""
 	def __init__(self, in_csv, out_csv, logger):
+		self.logger = logger
 		self.in_csv = in_csv
 		self.out_csv = out_csv
 		self._csv_check()
@@ -23,11 +24,11 @@ class Interpolator:
 		Validates that the output CSV is not a non-empty existing file.
 		"""
 		if not os.path.exists(in_csv):
-			logger.error('Can not find file: {0}'.format(in_csv))
+			self.logger.error('Can not find file: {0}'.format(in_csv))
 			sys.exit('Exiting.')
 		##
 		if os.path.exists(out_csv) and not os.path.getsize(out_csv) == 0:
-			logger.info('The output file is not empty: {0}'.format(out_csv))
+			self.logger.info('The output file is not empty: {0}'.format(out_csv))
 			answer = input('Do you want to continue and override it?(y/n) => ')
 			if answer == 'y':
 				pass
@@ -40,7 +41,7 @@ class Interpolator:
 			file_reader = csv.reader(open(in_csv, 'r'), delimiter=',')
 			self.matrix = numpy.array(list(file_reader))
 		except IOError:
-			logger.error('Unable to properly read the CSV file {0}', in_csv)
+			self.logger.error('Unable to properly read the CSV file {0}', in_csv)
 			sys.exit('Exiting.')
 		##
 		self.dims = self.matrix.shape
@@ -95,9 +96,9 @@ class Interpolator:
 				self.result[nan] = interpolated_value
 			with open(out_csv, 'w') as out_file:
 				out_file.write('\n'.join([','.join(row) for row in self.result]))
-			logger.info('Finished processing data.')
+			self.logger.info('Finished processing data.')
 		except:
-			logger.error('Something went wrong.')
+			self.logger.error('Something went wrong.')
 
 
 
